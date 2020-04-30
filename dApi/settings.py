@@ -32,6 +32,7 @@ LOGIN_REDIRECT_URL = '/api/v1/'
 
 INSTALLED_APPS = [
     'corsheaders',
+    'ckeditor',
     'api.apps.ApiConfig',
     'rest_framework',
     'django.contrib.admin',

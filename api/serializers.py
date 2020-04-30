@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Course, Topic
+from .models import Category, Course, Topic, Content
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -17,3 +17,8 @@ class TopicSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Topic
         fields = ('id', 'title', 'description')
+
+class ContentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Content
+        fields = ('id', 'content')

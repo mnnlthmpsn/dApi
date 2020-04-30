@@ -1,5 +1,6 @@
 from uuid import uuid4
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Category(models.Model):
@@ -38,3 +39,11 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
+
+class Content(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    content = RichTextField()
+
+    def __str__(self):
+        return str(self.id)

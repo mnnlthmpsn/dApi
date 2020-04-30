@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from .serializers import CategorySerializer, CourseSerializer, TopicSerializer
-from .models import Category, Course, Topic
+from .serializers import CategorySerializer, CourseSerializer, TopicSerializer, ContentSerializer
+from .models import Category, Course, Topic, Content
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -41,4 +41,15 @@ class CourseViewSet(viewsets.ModelViewSet):
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
-    permission_classes = [permissions.IsAdminUser]
+
+    # topic/id/content
+    @action(detail=True, methods=['get'])
+    def contents(self, request, pk=None):
+        topic = get_object_or_404(Topic, pk=pk)
+        contents = topic.content_set.all().values('id')
+        serializer = self.get_serializer(contents, many=True)
+        return Response(serializer.data)
+
+class ContentViewSet(viewsets.ModelViewSet):
+    queryset = Content.objects.all()
+    serializer_class = ContentSerializer
