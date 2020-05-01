@@ -6,6 +6,8 @@ from rest_framework.decorators import action
 from .serializers import CategorySerializer, CourseSerializer, TopicSerializer, ContentSerializer
 from .models import Category, Course, Topic, Content
 
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -28,7 +30,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         # .../id/topics/ gets all topics related to a particular course
         course = get_object_or_404(Course, pk=pk)
         topics = course.topic_set.all()
-        serializer = self.get_serializer(topics, many=True)
+        serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
@@ -46,9 +48,31 @@ class TopicViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def contents(self, request, pk=None):
         topic = get_object_or_404(Topic, pk=pk)
-        contents = topic.content_set.all().values('id')
-        serializer = self.get_serializer(contents, many=True)
+        contents = topic.content
+        serializer = ContentSerializer(contents)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def get_next(self, request, pk=None):
+        topic = get_object_or_404(Topic, pk=pk)
+        try:
+            next_topic = topic.get_next_by_pub_date()
+            serializer = TopicSerializer(next_topic)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:
+            return Response(None)
+
+    @action(detail=True, methods=['get'])
+    def get_previous(self, request, pk=None):
+        topic = get_object_or_404(Topic, pk=pk)
+        try:
+            previous_topic = topic.get_previous_by_pub_date()
+            serializer = TopicSerializer(previous_topic)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:
+            return Response(None)
+
+        
 
 class ContentViewSet(viewsets.ModelViewSet):
     queryset = Content.objects.all()
