@@ -24,7 +24,8 @@ class TopicSerializer(serializers.ModelSerializer):
 class ContentSerializer(serializers.ModelSerializer):
 
     topic = serializers.CharField(source='topic.title', read_only=True)
+    course = serializers.CharField(source='topic.course.title', read_only=True)
 
     class Meta:
         model = Content
-        fields = ('id', 'topic', 'content')
+        fields = ('id', 'course', 'topic', 'content')
