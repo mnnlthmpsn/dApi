@@ -1,0 +1,12 @@
+.card :hover {
+    background-color: black;
+    outline: 1px solid black;
+    text-decoration: none;
+}
+
+.myCard {
+    border: 1px solid white; 
+    background-color: white;
+    box-shadow: 0 0 10px 2px rgb(218, 217, 217);
+    border-radius: 5px; height: 50px;
+}

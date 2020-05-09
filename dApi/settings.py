@@ -26,13 +26,15 @@ SECRET_KEY = '1@&sl=4!g__w6)!ont+&!plg#umgb!7gx=6c1r+0lc!zduu-!$'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-LOGIN_REDIRECT_URL = '/api/v1/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = ':index'
 
 # Application definition
 
 INSTALLED_APPS = [
     'corsheaders',
     'ckeditor',
+    'kitchen.apps.KitchenConfig',
     'api.apps.ApiConfig',
     'rest_framework',
     'django.contrib.admin',

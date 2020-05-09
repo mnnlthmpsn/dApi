@@ -1,0 +1,93 @@
+{% extends '../base.html' %}
+
+{% block body %}
+<div class="container-fluid mt-1">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <!-- <li class="breadcrumb-item"><a href="{% url 'kitchen:dashboard' %}">Dashboard</a></li> -->
+            <!-- <li class="breadcrumb-item"><a href="#">Library</a></li> -->
+            <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-home"></i> Dashboard</li>
+            <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none;"><i class="fa fa-sign-out"></i> Logout</a></li>
+        </ol>
+    </nav>
+    <!-- body -->
+    <div class="container text-center">
+        {% if request.user.profile.is_confirmed %}
+        <div class="row">
+            <div class="col-sm-4 mt-2">
+                <a href="{% url 'kitchen:category' %}" style="text-decoration: none;">
+                    <div class="card dashboard" style="height: 40vh; background-color: #ad0100; color: white;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 15vh;">
+                                <i class="fa fa-list-alt" aria-hidden="true" style="font-size: 30px;"></i> Category
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-4 mt-2">
+                <a href="{% url 'kitchen:course' %}" style="text-decoration: none;">
+                    <div class="card dashboard" style="height: 40vh; background-color: #0f7c07; color: white;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 15vh;">
+                                <i class="fa fa-book" aria-hidden="true" style="font-size: 30px;"></i> Courses
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-4 mt-2">
+                <a href="#" style="text-decoration: none;">
+                    <div class="card dashboard" style="height: 40vh; background-color: #dfc200; color: white;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 15vh;">
+                                <i class="fa fa-comments" aria-hidden="true" style="font-size: 30px;"></i> Topics
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 mt-2">
+                <a href="#" style="text-decoration: none;">
+                    <div class="card dashboard" style="height: 40vh; background-color: #424242; color: white;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 15vh;">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 30px;"></i> Topic
+                                Contents
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-4 mt-2">
+                <a href="#" style="text-decoration: none;">
+                    <div class="card dashboard" style="height: 40vh; background-color: #0071ad; color: white;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 15vh;">
+                                <i class="fa fa-user" aria-hidden="true" style="font-size: 30px;"></i> User Settings
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="container">
+            <a href="{% url 'index' %}">
+                <div class="card dashboard" style="margin-top: 100px; height: 40vh; background-color: #0071ad; color: white;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin-top: 15vh;">
+                            <i class="fa fa-user" aria-hidden="true" style="font-size: 30px;"></i>
+                            User Awaiting Confirmation
+                        </h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% endblock %}
+    </div>
+</div>

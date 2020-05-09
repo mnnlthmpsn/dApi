@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 
 from .serializers import CategorySerializer, CourseSerializer, TopicSerializer, ContentSerializer
 from .models import Category, Course, Topic, Content
@@ -12,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['get'])
     def courses(self, request, pk=None):
@@ -24,6 +26,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(detail=True, methods=['get'])
     def topics(self, request, pk=None):
@@ -43,6 +46,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     # topic/id/content
     @action(detail=True, methods=['get'])
@@ -77,3 +81,4 @@ class TopicViewSet(viewsets.ModelViewSet):
 class ContentViewSet(viewsets.ModelViewSet):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
