@@ -1,5 +1,27 @@
 {% extends '../base.html' %}
 
 {% block body %}
-   <p>Awaiting Confirmation</p>
-{% endblock %}
+<div class="container-fluid mt-1">
+   <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-warning"></i> Confirmation</li>
+         <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none;"><i
+                  class="fa fa-sign-out"></i> Logout</a></li>
+      </ol>
+   </nav>
+   <div class="text-center" style="margin-bottom: 10vh; margin-top: 20vh">
+      <div class="container">
+         <a href="{% url 'kitchen:add_course' %}" style="text-decoration: none;">
+            <div class="card" style="margin-top: 100px; height: 40vh; background-color: #0071ad; color: white;">
+               <div class="card-body">
+                  <h5 class="card-title" style="margin-top: 15vh;">
+                     <i class="fa fa-warning" aria-hidden="true" style="font-size: 30px;"></i>
+                     Awaiting Confirmation
+                  </h5>
+               </div>
+            </div>
+         </a>
+      </div>
+      <hr style="width: 50vw">
+   </div>
+   {% endblock %}
