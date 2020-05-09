@@ -18,10 +18,11 @@ def registration(request):
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
-        User.objects.create_user(username=username, email=email, password=password)
-        return render(request, 'kitchen/awaiting.html')
-    else:
-        return render(request, 'kitchen/index.html')
+        user = authenticate(username=username, password=password)
+        if user is None:
+            User.objects.create_user(username=username, email=email, password=password)
+            return render(request, 'kitchen/awaiting.html')
+    return render(request, 'kitchen/index.html')
 
 def authLogin(request):
     username = request.POST['username']
@@ -40,10 +41,12 @@ def dashboard(request):
     return render(request, 'kitchen/dashboard.html')
 
 # category
+@login_required
 def category(request):
     categories = Category.objects.all()
     return render(request, 'kitchen/categories.html', {'categories': categories})
 
+@login_required
 def add_category(request):
     if request.method == 'POST':
         title = request.POST['title']
@@ -52,6 +55,7 @@ def add_category(request):
         return HttpResponseRedirect(reverse('kitchen:category'))
     return render(request, 'kitchen/add_category.html')
 
+@login_required
 def update_category(request, category_id):
     category = Category.objects.get(pk=category_id)
     if request.method == 'POST':
@@ -64,10 +68,12 @@ def update_category(request, category_id):
     return render(request, 'kitchen/update_category.html', {'category': category})
 
 # course
+@login_required
 def course(request):
     courses = Course.objects.all()
     return render(request, 'kitchen/courses.html', {'courses': courses})
 
+@login_required
 def add_course(request):
     categories = Category.objects.all()
     if request.method == 'POST':
@@ -80,6 +86,7 @@ def add_course(request):
         return HttpResponseRedirect(reverse('kitchen:course'))
     return render(request, 'kitchen/add_course.html', {'categories': categories})
 
+@login_required
 def update_course(request, course_id):
     course = Course.objects.get(pk=course_id)
     if request.method == 'POST':
