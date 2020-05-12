@@ -7,25 +7,29 @@
             <li class="breadcrumb-item"><a href="{% url 'kitchen:dashboard' %}"
                     style="text-decoration: none;"><i class="fa fa-home"></i> Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{% url 'kitchen:category' %}"
-                    style="text-decoration: none;"><i class="fa fa-alt-list"></i> Category</a></li>
+                    style="text-decoration: none;"><i class="fa fa-file-pdf-o"></i> Contents</a></li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-plus"></i> Add</li>
             <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none;"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ol>
     </nav>
-    <h5 class="text-center mt-5 mb-3">Add Category</h5>
-    <form action="{% url 'kitchen:add_category' %}" method="POST">
+    <h5 class="text-center mt-5 mb-3">Add Content</h5>
+    <form action="{% url 'kitchen:add_content' %}" method="POST">
         {% csrf_token %}
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="Category Title">Category Title</label>
-                    <input type="text" class="form-control" name="title" placeholder="eg. Computer Science">
+                    <label for="exampleFormControlSelect1">Topic</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="topic">
+                        {% for topic in topics %}
+                        <option value="{{ topic.id }}">{{ topic.title }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="Description">Category Description</label>
-                    <textarea class="form-control" name="description"cols="30" rows="10"></textarea>
+                    <label for="Description">Content</label>
+                    <textarea class="form-control" name="content" cols="30" rows="10"></textarea>
                 </div>
-                <button style="color: white" class="btn btn-warning"><i class="fa fa-plus"></i> Add</button>
+                <button style="color: white" class="btn btn-success"><i class="fa fa-plus"></i> Add</button>
             </div>
         </div>
     </form>

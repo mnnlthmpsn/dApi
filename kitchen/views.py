@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from api.models import Category, Course, Topic, Content
+from .models import Profile
 
 
 # Create your views here.
@@ -101,3 +102,108 @@ def update_course(request, course_id):
     return render(request, 'kitchen/update_course.html', {
         'course': course, 
     })
+
+# topic
+@login_required
+def topic(request):
+    topics = Topic.objects.all()
+    return render(request, 'kitchen/topics.html', {'topics': topics})
+
+@login_required
+def add_topic(request):
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        crs = request.POST.get('course')
+        course = Course.objects.get(pk=crs)
+        title = request.POST['title']
+        description = request.POST['description']
+        Topic.objects.create(course=course, title=title, description=description)
+        return HttpResponseRedirect(reverse('kitchen:topic'))
+    return render(request, 'kitchen/add_topic.html', {'courses': courses})
+
+@login_required
+def update_topic(request, topic_id):
+    topic = Topic.objects.get(pk=topic_id)
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        topic.title = title
+        topic.description = description
+        topic.save()
+        return HttpResponseRedirect(reverse('kitchen:topic'))
+    return render(request, 'kitchen/update_topic.html', {
+        'topic': topic, 
+    })
+
+# content
+@login_required
+def content(request):
+    contents = Content.objects.all()
+    return render(request, 'kitchen/contents.html', {'contents': contents})
+
+@login_required
+def add_content(request):
+    topics = Topic.objects.all()
+    if request.method == 'POST':
+        tpc = request.POST.get('topic')
+        topic = Topic.objects.get(pk=tpc)
+        content = request.POST['content']
+        Content.objects.create(topic=topic, content=content)
+        return HttpResponseRedirect(reverse('kitchen:content'))
+    return render(request, 'kitchen/add_content.html', {'topics': topics})
+
+@login_required
+def update_content(request, content_id):
+    content = Content.objects.get(pk=content_id)
+    if request.method == 'POST':
+        content_from_template = request.POST['content']
+        content.content = content_from_template
+        content.save()
+        return HttpResponseRedirect(reverse('kitchen:content'))
+    return render(request, 'kitchen/update_content.html', {
+        'content': content, 
+    })
+
+# user settings
+@login_required
+def settings(request):
+    return render(request, 'kitchen/settings.html')
+
+@login_required
+def update_settings(request):
+    if request.method == 'POST':
+        """
+        note: Username has been disabled to avoid
+        conflicts when changing.
+        Accept inputs from templates, below
+        """
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        
+
+        # save user
+        user = User.objects.get(id=request.user.id)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        user.save()
+        return HttpResponseRedirect(reverse('kitchen:settings'))
+    return render(request, 'kitchen/settings.html')
+
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        user = request.user.id
+        school = request.POST['school']
+        dob = request.POST['dob']
+        phone = request.POST['phone']
+
+        profile = Profile.objects.get(id=request.user.profile.id)
+        profile.school = school
+        profile.date_of_birth = dob
+        profile.phone = phone
+        profile.save()
+        return HttpResponseRedirect(reverse('kitchen:settings'))
+    return render(request, 'kitchen/settings.html')

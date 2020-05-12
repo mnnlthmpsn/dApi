@@ -1,0 +1,64 @@
+{% extends '../base.html' %}
+
+{% block body %}
+<div class="container-fluid mt-1">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'kitchen:dashboard' %}"
+                    style="text-decoration: none;"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="breadcrumb-item" active><i class="fa fa-user"></i> User Settings</li>
+            <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none;"><i class="fa fa-sign-out"></i> Logout</a></li>
+        </ol>
+    </nav>
+    <h5 class="text-center mt-5 mb-3">Settings</h5>
+    <form action="{% url 'kitchen:update_settings' %}" method="POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="Category Title">Username</label>
+                    <input type="text" class="form-control" name="username" value="{{ request.user.username }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="Category Title">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" value="{{ user.first_name }}" placeholder="Firstname" required> 
+                </div>
+                <div class="form-group">
+                    <label for="Category Title">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" value="{{ user.last_name }}" placeholder="Lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="Category Title">Email</label>
+                    <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+                </div>
+                <button style="color: white" class="btn btn-warning"><i class="fa fa-edit"></i> Update</button>
+            </div>
+        </div>
+    </form>
+    <hr style="width: 70%; margin-top: 20px; margin-bottom: 20px;">
+    <form action="{% url 'kitchen:update_profile' %}" method="POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <small id="emailHelp" class="form-text text-muted mb-3">
+                    Please note items in field inputs are default values. Edit them appropriately
+                </small>
+                <div class="form-group">
+                    <label for="Category Title">School</label>
+                    <input type="text" class="form-control" name="school" value="{{ request.user.profile.school }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="Category Title">Date</label>
+                    <input type="text" class="form-control" name="dob" value="{{ request.user.profile.date_of_birth }}" required>
+                    <small id="emailHelp" class="form-text text-muted">format: YYYY-MM-DD | eg: 1998-09-29</small>
+                </div>
+                <div class="form-group">
+                    <label for="Category Title">Phone</label>
+                    <input type="tel" class="form-control" name="phone" value="{{ request.user.profile.phone }}" required>
+                </div>
+                <button style="color: white" class="btn btn-success"><i class="fa fa-edit"></i> Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
