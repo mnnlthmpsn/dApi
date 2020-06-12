@@ -34,7 +34,7 @@ class Course(models.Model):
 
 class Topic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    title = models.CharField(max_length=100, null=False, default='Computer Science', unique=True)
+    title = models.CharField(max_length=100, null=False, default='Computer Science')
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=200, null=False, default='This is is DZCS101')
     pub_date = models.DateTimeField(auto_now_add=True)
