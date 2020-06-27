@@ -68,24 +68,22 @@ def update_category(request, category_id):
         return HttpResponseRedirect(reverse('kitchen:category'))
     return render(request, 'kitchen/update_category.html', {'category': category})
 
+@login_required
+def category_details(request, category_id):
+    category = Category.objects.get(pk=category_id)
+    return render(request, 'kitchen/category_details.html', {'category': category})
+
 # course
 @login_required
-def course(request):
-    courses = Course.objects.all()
-    return render(request, 'kitchen/courses.html', {'courses': courses})
-
-@login_required
-def add_course(request):
-    categories = Category.objects.all()
+def add_course(request, category_id):
+    category = Category.objects.get(pk=category_id)
     if request.method == 'POST':
-        cat = request.POST.get('category')
-        category = Category.objects.get(pk=cat)
         title = request.POST['title']
         code = request.POST['code']
         description = request.POST['description']
         Course.objects.create(category=category, title=title, code=code, description=description)
-        return HttpResponseRedirect(reverse('kitchen:course'))
-    return render(request, 'kitchen/add_course.html', {'categories': categories})
+        return HttpResponseRedirect(reverse('kitchen:category_details', kwargs={'category_id': category_id}))
+    return render(request, 'kitchen/add_course.html', {'category': category})
 
 @login_required
 def update_course(request, course_id):
@@ -98,71 +96,41 @@ def update_course(request, course_id):
         course.code = code
         course.description = description
         course.save()
-        return HttpResponseRedirect(reverse('kitchen:course'))
+        return HttpResponseRedirect(reverse('kitchen:course_details', kwargs={'course_id': course_id}))
     return render(request, 'kitchen/update_course.html', {
         'course': course, 
     })
 
-# topic
-@login_required
-def topic(request):
-    topics = Topic.objects.all()
-    return render(request, 'kitchen/topics.html', {'topics': topics})
-
-@login_required
-def add_topic(request):
-    courses = Course.objects.all()
-    if request.method == 'POST':
-        crs = request.POST.get('course')
-        course = Course.objects.get(pk=crs)
-        title = request.POST['title']
-        description = request.POST['description']
-        Topic.objects.create(course=course, title=title, description=description)
-        return HttpResponseRedirect(reverse('kitchen:topic'))
-    return render(request, 'kitchen/add_topic.html', {'courses': courses})
-
-@login_required
-def update_topic(request, topic_id):
-    topic = Topic.objects.get(pk=topic_id)
-    if request.method == 'POST':
-        title = request.POST['title']
-        description = request.POST['description']
-        topic.title = title
-        topic.description = description
-        topic.save()
-        return HttpResponseRedirect(reverse('kitchen:topic'))
-    return render(request, 'kitchen/update_topic.html', {
-        'topic': topic, 
-    })
+def course_details(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    topics = Topic.objects.filter(course=course)
+    return render(request, 'kitchen/course_details.html', {'course': course, 'topics': topics})
 
 # content
 @login_required
-def content(request):
-    contents = Content.objects.all()
-    return render(request, 'kitchen/contents.html', {'contents': contents})
-
-@login_required
-def add_content(request):
-    topics = Topic.objects.all()
+def add_content(request, course_id):
+    course = Course.objects.get(pk=course_id)
     if request.method == 'POST':
-        tpc = request.POST.get('topic')
-        topic = Topic.objects.get(pk=tpc)
+        topic = request.POST['topic']
+
+        # create topic
+        new_topic = Topic.objects.create(title=topic, course=course, description='default')
+
         content = request.POST['content']
-        Content.objects.create(topic=topic, content=content)
-        return HttpResponseRedirect(reverse('kitchen:content'))
-    return render(request, 'kitchen/add_content.html', {'topics': topics})
+        Content.objects.create(topic=new_topic, content=content)
+        return HttpResponseRedirect(reverse('kitchen:course_details', kwargs={'course_id': course_id},))
+    return render(request, 'kitchen/add_content.html', {'course': course})
+
 
 @login_required
-def update_content(request, content_id):
-    content = Content.objects.get(pk=content_id)
+def update_content(request, course_id, topic_id):
+    currentTopic = Topic.objects.get(pk=topic_id)
     if request.method == 'POST':
-        content_from_template = request.POST['content']
-        content.content = content_from_template
-        content.save()
-        return HttpResponseRedirect(reverse('kitchen:content'))
-    return render(request, 'kitchen/update_content.html', {
-        'content': content, 
-    })
+        upd_topic = request.POST['topic']
+        upd_content = request.POST['content']
+        return HttpResponseRedirect(reverse('kitchen:course_details', kwargs={'course_id': course_id},))
+    return render(request, 'kitchen/update_content.html', {'topic': currentTopic, 'course_id': course_id})
+
 
 # user settings
 @login_required
@@ -180,7 +148,6 @@ def update_settings(request):
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         email = request.POST['email']
-        
 
         # save user
         user = User.objects.get(id=request.user.id)

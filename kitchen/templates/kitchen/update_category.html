@@ -5,26 +5,33 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'kitchen:dashboard' %}"
-                    style="text-decoration: none;">Dashboard</a></li>
+                    style="text-decoration: none;"><i
+                    class="fa fa-home"></i> Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{% url 'kitchen:category' %}"
-                    style="text-decoration: none;">Category</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Update</li>
+                    style="text-decoration: none;"><i
+                    class="fa fa-list-alt"></i> Department</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'kitchen:category_details' category.id %}"
+                style="text-decoration: none;"><i
+                class="fa fa-info-circle"></i> {{ category.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i
+                class="fa fa-refresh"></i> Update</li>
             <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none;">Logout</a></li>
         </ol>
     </nav>
-    <h5 class="text-center mt-5 mb-3">Update Category</h5>
+    <h5 class="text-center mt-5 mb-3">Update Department</h5>
     {% if category %}
     <form action="{% url 'kitchen:update_category' category.id %}" method="POST">
         {% csrf_token %}
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="Category Title">Category Title</label>
+                    <label for="Category Title">Department Title</label>
                     <input type="text" class="form-control" name="title" value="{{ category.title }}">
                 </div>
                 <div class="form-group">
-                    <label for="Description">Category Description</label>
-                    <textarea class="form-control" name="description" cols="30" rows="10">{{ category.description }}</textarea>
+                    <label for="Description">Department Description</label>
+                    <textarea class="form-control" name="description" cols="30"
+                        rows="10">{{ category.description }}</textarea>
                 </div>
                 <button style="color: white" class="btn btn-success"><i class="fa fa-edit"></i> Update</button>
             </div>
