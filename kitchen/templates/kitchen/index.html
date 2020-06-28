@@ -4,13 +4,28 @@
 
 <div class="container">
     <nav>
-        <div style="border: 1px solid lightyellow; text-align: center; background-color: #c12310 ; height: 10vh; margin-top: 10px; border-radius: 10px; color: white;">
+        <div
+            style="border: 1px solid lightyellow; text-align: center; background-color: #c12310 ; height: 10vh; margin-top: 10px; border-radius: 10px; color: white;">
             <h5 class="mt-4">Damzinium Content Upload Portal</h5>
         </div>
     </nav>
+    <!-- alert -->
+    {% if messages %}
+    <div style="display: flex; justify-content: center; padding-top: 20px">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for message in messages %}
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <!-- alert -->
     <div class="row">
         <!-- login -->
-        <div class="col-sm-6 mt-5">
+        <div class="col-sm-6 mt-3">
             <h3 class="text-center mb-5">Login</h3>
             <form action="{% url 'kitchen:login' %}" method="POST">
                 {% csrf_token %}
@@ -18,14 +33,13 @@
                     <label for="username">Username</label>
                     <input type="text" class="form-control mb-3" name="username" placeholder="Username" required>
                     <label for="password">Password</label>
-                    <input type="password" class="form-control mb-3" name="password"
-                        placeholder="Password" required>
+                    <input type="password" class="form-control mb-3" name="password" placeholder="Password" required>
                     <input type="submit" value="Login" role="button" class="btn btn-success mt-2" style="color: white;">
                 </div>
             </form>
         </div>
         <!-- registration -->
-        <div class="col-sm-6 mt-5">
+        <div class="col-sm-6 mt-3">
             <h3 class="text-center mb-5">Registration</h3>
             <form action="{% url 'kitchen:registration' %}" method="POST">
                 {% csrf_token %}
@@ -35,8 +49,7 @@
                     <label for="email">Email</label>
                     <input type="email" class="form-control mb-3" name="email" placeholder="Email" required>
                     <label for="password">Password</label>
-                    <input type="password" class="form-control mb-3" name="password"
-                        placeholder="Password" required>
+                    <input type="password" class="form-control mb-3" name="password" placeholder="Password" required>
                     <input type="submit" value="Register" role="button" class="btn btn-warning mt-2"
                         style="color: white;">
                 </div>

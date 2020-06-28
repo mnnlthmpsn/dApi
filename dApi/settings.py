@@ -23,11 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['https://dapi.herokuapp.com', 'http://dapi.herokuapp.com', 'https://dbeta.herokuapp.com', 'http://dbeta.herokuapp.com']
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = ':index'
+LOGIN_URL = 'index'
 
 # Application definition
 

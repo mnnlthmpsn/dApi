@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -23,6 +24,9 @@ def registration(request):
         if user is None:
             User.objects.create_user(username=username, email=email, password=password)
             return render(request, 'kitchen/awaiting.html')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error creating account. Please try again')
+            return HttpResponseRedirect(reverse('index'))
     return render(request, 'kitchen/index.html')
 
 def authLogin(request):
@@ -34,6 +38,7 @@ def authLogin(request):
         login(request, user)
         return HttpResponseRedirect(reverse('kitchen:dashboard'))
     else:
+        messages.add_message(request, messages.ERROR, 'Error logging in. Please try again')
         return HttpResponseRedirect(reverse('index'))
 
 
