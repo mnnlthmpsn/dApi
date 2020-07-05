@@ -70,7 +70,7 @@ def update_category(request, category_id):
         category.title = title
         category.description = description
         category.save()
-        return HttpResponseRedirect(reverse('kitchen:category'))
+        return HttpResponseRedirect(reverse('kitchen:category_details', kwargs={'category_id': category_id}))
     return render(request, 'kitchen/update_category.html', {'category': category})
 
 @login_required
@@ -129,12 +129,20 @@ def add_content(request, course_id):
 
 @login_required
 def update_content(request, course_id, topic_id):
-    currentTopic = Topic.objects.get(pk=topic_id)
+    topic = Topic.objects.get(pk=topic_id)
+    topic_content = Content.objects.get(topic=topic)
     if request.method == 'POST':
-        upd_topic = request.POST['topic']
-        upd_content = request.POST['content']
+        content = request.POST['content']
+
+        # update topic
+        topic_content.content = content
+
+        # save
+        topic_content.save()
+
+
         return HttpResponseRedirect(reverse('kitchen:course_details', kwargs={'course_id': course_id},))
-    return render(request, 'kitchen/update_content.html', {'topic': currentTopic, 'course_id': course_id})
+    return render(request, 'kitchen/update_content.html', {'topic': topic, 'course_id': course_id})
 
 
 # user settings

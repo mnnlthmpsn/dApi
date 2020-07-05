@@ -13,7 +13,8 @@
       </li>
     </ol>
   </nav>
-  <h5 class="text-center mt-5 mb-3">Update Content</h5>
+  <h6 class="text-center mt-3" style="color: red !important;">NB: If you'd like to update the course or topic, contact your supervisor</h6>
+  <h5 class="text-center mt-3 mb-3">Update Content</h5>
   <form action="{% url 'kitchen:update_content' course_id topic.id %}" method="POST">
     {% csrf_token %}
     <div class="row justify-content-center">
@@ -24,7 +25,7 @@
         </div>
         <div class="form-group">
           <label for="exampleFormControlSelect1">Topic</label>
-          <input type="text" class="form-control" name="topic" value="{{ topic.title }}">
+          <input type="text" class="form-control" name="topic" value="{{ topic.title }}" disabled>
         </div>
         <div class="form-group">
           <label for="Description">Content</label>
@@ -49,7 +50,7 @@
           </script>
         </div>
         <button style="color: white" class="btn btn-success">
-          <i class="fa fa-plus"></i> Add
+          <i class="fa fa-plus"></i> Update
         </button>
       </div>
     </div>
